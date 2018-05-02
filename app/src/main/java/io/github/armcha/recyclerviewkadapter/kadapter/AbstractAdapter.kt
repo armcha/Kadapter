@@ -7,12 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 
-/**
- *
- * Created by Arman Chatikyan on 08 Dec 2017
- */
-
-abstract class AbstractAdapter<ITEM> constructor(protected var itemList: List<ITEM>,
+abstract class AbstractAdapter<ITEM> constructor(protected var itemList: MutableList<ITEM>,
                                                  private val layoutResId: Int)
     : RecyclerView.Adapter<AbstractAdapter.Holder>() {
 
@@ -46,12 +41,12 @@ abstract class AbstractAdapter<ITEM> constructor(protected var itemList: List<IT
     }
 
     fun add(item: ITEM) {
-        itemList.toMutableList().add(item)
+        itemList.add(item)
         notifyItemInserted(itemList.size)
     }
 
     fun remove(position: Int) {
-        itemList.toMutableList().removeAt(position)
+        itemList.removeAt(position)
         notifyItemRemoved(position)
     }
 
