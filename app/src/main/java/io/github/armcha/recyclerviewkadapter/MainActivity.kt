@@ -21,6 +21,8 @@ class MainActivity : AppCompatActivity() {
         recyclerView.setUp(users, R.layout.item_layout, {
             nameText.text = it.name
             surNameText.text = it.surname
+        }, {
+            Log.d("Item ", "Clicked - $name")
         })
     }
 }
