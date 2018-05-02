@@ -12,14 +12,12 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        listOf<User>()
 
-        val users = listOf(User("A", "B"),
-                User("A", "B"),
-                User("A", "B"),
-                User("A", "B"),
-                User("A", "B"),
-                User("A", "B"),
-                User("A", "B"))
+        val users = mutableListOf<User>()
+        repeat(100){
+            users+=User("Name is $it","Surname is $it")
+        }
 
         recyclerView.setUp(users, R.layout.item_layout, {
             nameText.text = it.name

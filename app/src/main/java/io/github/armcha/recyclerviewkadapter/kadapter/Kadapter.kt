@@ -8,6 +8,7 @@ import android.view.View
  *
  * Created by Arman Chatikyan on 08 Dec 2017
  */
+
 class RibbleAdapter<ITEM>(items: List<ITEM>,
                           layoutResId: Int,
                           private val bindHolder: View.(ITEM) -> Unit)
@@ -36,14 +37,6 @@ fun <ITEM> RecyclerView.setUp(items: List<ITEM>,
                               bindHolder: View.(ITEM) -> Unit,
                               itemClick: ITEM.() -> Unit = {},
                               manager: RecyclerView.LayoutManager = LinearLayoutManager(this.context)): RibbleAdapter<ITEM> {
-    val ribbleAdapter by lazy {
-        RibbleAdapter(items, layoutResId, {
-            bindHolder(it)
-        }, {
-            itemClick()
-        })
-    }
     layoutManager = manager
-    adapter = ribbleAdapter
-    return ribbleAdapter
+    return RibbleAdapter(items, layoutResId, bindHolder, itemClick).apply { adapter = this }
 }

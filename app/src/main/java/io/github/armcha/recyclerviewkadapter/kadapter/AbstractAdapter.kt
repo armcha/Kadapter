@@ -1,7 +1,9 @@
 package io.github.armcha.recyclerviewkadapter.kadapter
 
 import android.support.v7.util.DiffUtil
+import android.support.v7.util.DiffUtil.calculateDiff
 import android.support.v7.widget.RecyclerView
+import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 
@@ -34,16 +36,14 @@ abstract class AbstractAdapter<ITEM> constructor(protected var itemList: List<IT
         holder.itemView.bind(item)
     }
 
+    final override fun onViewRecycled(holder: Holder) {
+        super.onViewRecycled(holder)
+        onViewRecycled(holder.itemView)
+    }
+
     fun update(items: List<ITEM>) {
         updateAdapterWithDiffResult(calculateDiff(items))
     }
-
-    private fun updateAdapterWithDiffResult(result: DiffUtil.DiffResult) {
-        result.dispatchUpdatesTo(this)
-    }
-
-    private fun calculateDiff(newItems: List<ITEM>) =
-            DiffUtil.calculateDiff(DiffUtilCallback(itemList, newItems))
 
     fun add(item: ITEM) {
         itemList.toMutableList().add(item)
@@ -55,11 +55,6 @@ abstract class AbstractAdapter<ITEM> constructor(protected var itemList: List<IT
         notifyItemRemoved(position)
     }
 
-    final override fun onViewRecycled(holder: Holder) {
-        super.onViewRecycled(holder)
-        onViewRecycled(holder.itemView)
-    }
-
     protected open fun onViewRecycled(itemView: View) {
     }
 
@@ -68,6 +63,16 @@ abstract class AbstractAdapter<ITEM> constructor(protected var itemList: List<IT
 
     protected open fun View.bind(item: ITEM) {
     }
+
+    private fun updateAdapterWithDiffResult(result: DiffUtil.DiffResult) {
+        result.dispatchUpdatesTo(this)
+    }
+
+    private fun calculateDiff(newItems: List<ITEM>) =
+            DiffUtil.calculateDiff(DiffUtilCallback(itemList, newItems))
+
+    private infix fun ViewGroup.inflate(layoutResId: Int): View =
+            LayoutInflater.from(context).inflate(layoutResId, this, false)
 
     class Holder(itemView: View) : RecyclerView.ViewHolder(itemView)
 }
